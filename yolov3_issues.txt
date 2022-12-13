@@ -1,0 +1,4 @@
+Based on your setup, you might face some issues in yolov3 darknet -> onnx conversion.
+This can be due to some missing apt packages. Try running the following command:
+
+apt-get install build-essential gfortran libatlas-base-dev protobuf-compiler python-dev
