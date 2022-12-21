@@ -72,11 +72,12 @@ if __name__ == '__main__':
 
     # TorchScript export
     try:
-        print('\nStarting TorchScript export with torch %s...' % torch.__version__)
-        f = opt.weights.replace('.pt', '.torchscript.pt')  # filename
-        ts = torch.jit.trace(model, img, strict=False)
-        ts.save(f)
-        print('TorchScript export success, saved as %s' % f)
+        #print('\nStarting TorchScript export with torch %s...' % torch.__version__)
+        #f = opt.weights.replace('.pt', '.torchscript.pt')  # filename
+        #ts = torch.jit.trace(model, img, strict=False)
+        #ts.save(f)
+        print("Avoiding Torchscript export for now")
+        #print('TorchScript export success, saved as %s' % f)
     except Exception as e:
         print('TorchScript export failure: %s' % e)
 
@@ -104,12 +105,13 @@ if __name__ == '__main__':
                      
     # TorchScript-Lite export
     try:
-        print('\nStarting TorchScript-Lite export with torch %s...' % torch.__version__)
-        f = opt.weights.replace('.pt', '.torchscript.ptl')  # filename
-        tsl = torch.jit.trace(model, img, strict=False)
-        tsl = optimize_for_mobile(tsl)
-        tsl._save_for_lite_interpreter(f)
-        print('TorchScript-Lite export success, saved as %s' % f)
+        #print('\nStarting TorchScript-Lite export with torch %s...' % torch.__version__)
+        #f = opt.weights.replace('.pt', '.torchscript.ptl')  # filename
+        #tsl = torch.jit.trace(model, img, strict=False)
+        #tsl = optimize_for_mobile(tsl)
+        #tsl._save_for_lite_interpreter(f)
+        print('Avoiding TorchScript-Lite export for now')
+        #print('TorchScript-Lite export success, saved as %s' % f)
     except Exception as e:
         print('TorchScript-Lite export failure: %s' % e)
 
