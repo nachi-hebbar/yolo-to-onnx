@@ -8,6 +8,7 @@ read -p "Did you train your model with default anchors?(y/n)" default_anchors
 echo "-------------------------------------------"
 read -p "What are the number of classes in your model?(Give an integer value)" num_classes
 echo "-------------------------------------------"
+read -p "What is the image size you trained your model on?(Enter just the width or height)" img_size
 if [ "$model_type" == "yolov3" ]
 then 
 	echo "Please give us a moment as we are download the required version of onnx required for yolov3......."
@@ -23,12 +24,13 @@ if [ "$model_type" == "yolov7" ]
 then
 	echo "v7 here we come"
 	cd yolov7
-	python export.py --weights "../"$weights --grid --include-nms --dynamic-batch
+	echo "Running this command: python export.py --weights "../"$weights --grid --include-nms --dynamic-batch --img-size $img_size"
+	python export.py --weights "../"$weights --grid --include-nms --dynamic-batch --img-size $img_size
 elif [ "$model_type" == "yolov5" ]
 then
 	echo "v5 here we come"
 	cd yolov5
-	python export.py --weights "../"$weights --include 'onnx' --dynamic 
+	python export.py --weights "../"$weights --include 'onnx' --dynamic --img-size $img_size
 
 else
 	echo "v3 here we come"
