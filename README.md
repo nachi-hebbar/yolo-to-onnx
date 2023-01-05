@@ -4,6 +4,6 @@ This is an awiros utility to convert all your yolo models into the common onnx f
 
 Steps:
 
-    Clone the Repo
-    Install dependencies using pip install -r requirements.txt
-    Run the onnx-converter.sh script.
+    1. Clone the Repo
+    2. Install dependencies using pip install -r requirements.txt
+    3. Run the onnx-converter.sh script.
