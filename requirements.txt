@@ -6,6 +6,7 @@ setuptools
 seaborn
 pandas
 numpy
+protobuf==3.6
 
 
 
