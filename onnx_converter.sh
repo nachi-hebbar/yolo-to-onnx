@@ -1,47 +1,45 @@
-function parse_yaml {
-   local prefix=$2
-   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
-   sed -ne "s|^\($s\):|\1|" \
-        -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
-        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
-   awk -F$fs '{
-      indent = length($1)/2;
-      vname[indent] = $2;
-      for (i in vname) {if (i > indent) {delete vname[i]}}
-      if (length($3) > 0) {
-         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
-         printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
-      }
-   }'
-}
-
-
-
+source yaml_writer.sh
 
 echo "Welcome to Yolo-ONNX Converter Tool!"
 echo "-------------------------------------------"
 cat model_types.txt
 echo "-------------------------------------------"
-read -p "Enter the name of your model you are working on : " model_type
-echo "-------------------------------------------"
-read -p "Enter your data.yaml path : " data_yaml
-echo "- ------------------------------------------"
-eval $(parse_yaml $data_yaml)
 
+read -p "Enter the name of your model you are working on(Enter number) : " model_type
+echo "-------------------------------------------"
+cat model_frameworks.txt
+echo "-------------------------------------------"
+
+read -p "Which framework have you trained your model with?(Enter number) : " model_framework
+echo "- ------------------------------------------"
+
+if [ "$model_framework" == "1" ]
+then
+	read -p "Enter your data.yaml path : " data_yaml
+	echo "- ------------------------------------------"
+	eval $(parse_yaml $data_yaml)
+else
+	read -p "Enter your model config file: " data_cfg
+	echo "- ------------------------------------------"
+	eval $(parse_yaml $data_cfg)
+fi
+read -p "Enter your model_config.yaml path : " config_yaml
+echo "- ------------------------------------------"
+echo "Anchors for your model is: $anchors"
 echo -e "Labels are $names"
 echo "$names" > names.txt
 echo "The number of classes in your model is: $nc"
 read -p "Did you train your model with default anchors?(y/n) : " default_anchors
 echo "-------------------------------------------"
-read -p "What are the number of classes in your model?(Give an integer value) : " num_classes
-echo "-------------------------------------------"
+#read -p "What are the number of classes in your model?(Give an integer value) : " num_classes
+#echo "-------------------------------------------"
 read -p "What is the image size you trained your model on?(Enter just the width or height) : " img_size
 echo "-------------------------------------------"
 cat model_folder_names.txt
 echo "-------------------------------------------"
-read -p "Enter a folder name where we'll export your model to. Follow the below naming convention : " folder_name
+read -p "Enter a folder name where we'll export your model to. Follow the naming convention <object_class>.<model_type> : " folder_name
 
-if [ "$model_type" == "yolov3" ]
+if [ "$model_type" == "3" ]
 then 
 	echo "Please give us a moment as we are download the required version of onnx required for yolov3......."
 	pip install onnx==1.4.1
@@ -52,16 +50,17 @@ else
 	read -p "Enter your model weights path : " weights
 fi	
 
-if [ "$model_type" == "yolov7" ]
+if [ "$model_type" == "1" ]
 then
 	echo "v7 here we come"
 	mkdir $folder_name && mkdir $folder_name/onnx && mkdir $folder_name/onnx/v1
 	cd yolov7
 	echo "Running this command: python export.py --weights "../"$weights --grid --include-nms --dynamic-batch --img-size $img_size"
 	python export.py --weights "../"$weights --grid --include-nms --dynamic-batch --img-size $img_size
-	$onnx_model_name= $weights | cut -d '.' -f 1 
-	mv "../"$onnx_model_name".onnx" "../"$folder_name/onnx/v1/
-elif [ "$model_type" == "yolov5" ]
+	onnx_model_name="${weights:0:-3}"".onnx"
+	#$onnx_model_name = $weights | cut -d '.' -f 1 
+	mv "../"$onnx_model_name "../"$folder_name/onnx/v1/
+elif [ "$model_type" == "2" ]
 then
 	echo "v5 here we come"
 	cd yolov5
