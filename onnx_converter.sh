@@ -31,8 +31,6 @@ echo "$names" > names.txt
 echo "The number of classes in your model is: $nc"
 read -p "Did you train your model with default anchors?(y/n) : " default_anchors
 echo "-------------------------------------------"
-#read -p "What are the number of classes in your model?(Give an integer value) : " num_classes
-#echo "-------------------------------------------"
 read -p "What is the image size you trained your model on?(Enter just the width or height) : " img_size
 echo "-------------------------------------------"
 cat model_folder_names.txt
@@ -58,14 +56,17 @@ then
 	echo "Running this command: python export.py --weights "../"$weights --grid --include-nms --dynamic-batch --img-size $img_size"
 	python export.py --weights "../"$weights --grid --include-nms --dynamic-batch --img-size $img_size
 	onnx_model_name="${weights:0:-3}"".onnx"
-	#$onnx_model_name = $weights | cut -d '.' -f 1 
 	mv "../"$onnx_model_name "../"$folder_name/onnx/v1/
+	cp "../boilerplate_json/yolov7_spec.json" "../"$folder_name/onnx/v1/
+	cd "../"$folder_name/onnx/v1
+	echo "Done! The following folder has been created for you: $folder_name. Kindly edit the labels and model path in you spec.json as per your project"
+
 elif [ "$model_type" == "2" ]
 then
 	echo "v5 here we come"
 	cd yolov5
 	python export.py --weights "../"$weights --include 'onnx' --dynamic --img-size $img_size
-
+	
 else
 	echo "v3 here we come"
 	cd yolov3

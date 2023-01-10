@@ -1,0 +1,44 @@
+{
+  "model_type": "object-detector",
+  "architecture": "yolov7",
+  "input_data": {
+    "layers": [
+      {
+        "name": "images",
+        "shape": [-1, 3, 640, 640],
+        "attribs": ["channel_order"],
+        "channel_order": "RGB"
+      }
+    ]
+  },
+  "output_data": {
+    "layers": [
+       {
+        "name": "output",
+        "shape": [-1, 18, 80, 80],
+        "attribs": ["nms", "anchors"],
+        "nms": 0.6,
+        "anchors":[10,13, 16,30, 33,23]
+      },
+      {
+        "name": "290",
+        "shape": [-1, 18, 40, 40],
+        "attribs": ["nms", "anchors"],
+        "nms": 0.6,
+        "anchors": [30,61, 62,45, 59,119]
+      },
+      {
+        "name": "303",
+        "shape": [-1, 18, 20, 20],
+        "attribs": ["nms", "anchors"],
+        "nms": 0.6,
+        "anchors": [116,90, 156,198, 373,326]
+      }
+    ],
+    "labels": ["forklift"] 
+  },
+  "onnx_path": "forklift.tiny_yolov7/onnx/v3/best.onnx",
+  "onnx_ir": 6,
+  "onnx_opset": 12,
+  "deepstream_config_path": "/path/to/config/file"
+}
