@@ -1,0 +1,3 @@
+fire.tiny_yolov7
+common.small_yolov5
+person.large_yolov3
