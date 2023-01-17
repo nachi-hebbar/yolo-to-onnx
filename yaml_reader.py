@@ -16,7 +16,7 @@ else:
 
 with open(spec_path,'r+') as spec:
     data=json.load(spec)
-    data["input_data"]["layers"][0]["shape"]=[-1,3,img_size,img_size]
+    data["input_data"]["layers"][0]["shape"]=[-1,3,int(img_size),int(img_size)]
     onnx_model=onnx_model_name.split("/")[-1]
     data["onnx_path"]=folder_name+"/onnx/v1/"+onnx_model
     if model_type=="2":
