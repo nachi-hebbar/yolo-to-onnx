@@ -23,17 +23,17 @@ with open(spec_path,'r+') as spec:
         with open(data_file) as f:
             data_yaml=yaml.safe_load(f)
             labels=list(data_yaml["names"].values())
-            print("Labels are: ", labels)
+            #print("Labels are: ", labels)
     elif model_type=="1":
         with open(data_file) as f:
             data_yaml=yaml.safe_load(f)
             labels=data_yaml["names"]
-            print("Labels are: ", labels)
+            #print("Labels are: ", labels)
     else:
         names_file= "../"+''.join(onnx_model_name.split(".")[:-1])+".names"
         with open(names_file) as f:
             labels=f.read()
-            print("Labels are: ",labels)
+            #print("Labels are: ",labels)
     data["output_data"]["labels"]=labels
     spec.seek(0)
 new_path="../"+folder_name+"/onnx/v1/spec.json"
